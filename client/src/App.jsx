@@ -3,9 +3,10 @@ import "./App.css";
 
 import { io } from "socket.io-client";
 
-const socket = io("https://ezbuzzer-back.onrender.com", {
+const socket = io(import.meta.env.VITE_BACKEND_URL, {
   transports: ["websocket"],
 });
+
 
 function App() {
   const [name, setName] = useState("");
