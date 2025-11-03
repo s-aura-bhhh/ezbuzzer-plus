@@ -8,7 +8,7 @@ app.use(cors());
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors{
+  cors: {
     origin: [
       "http://localhost:5173", // local dev
       "https://ezbuzzer-plus.vercel.app" // deployed frontend
