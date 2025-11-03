@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "./App.css";
 
-const socket = io(import.meta.env.VITE_BACKEND_URL);
-
+export const socket = io(import.meta.env.VITE_BACKEND_URL, {
+  transports: ["websocket"], // avoids polling errors
+});
 function App() {
   const [name, setName] = useState("");
   const [joined, setJoined] = useState(false);
