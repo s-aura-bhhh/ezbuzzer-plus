@@ -1,91 +1,48 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
+import React, { useState } from "react";
+import HostView from "./components/HostView";
+import PlayerView from "./components/PlayerView";
 
-const socket = io("http://172.23.6.162:4000");
- // ← change X.X to your laptop's local IP
-
-export default function App() {
-  const [role, setRole] = useState(null);
+function App() {
+  const [joined, setJoined] = useState(false);
+  const [isHost, setIsHost] = useState(false);
   const [name, setName] = useState("");
-  const [players, setPlayers] = useState({});
-  const [buzzed, setBuzzed] = useState(null);
 
-  useEffect(() => {
-    socket.on("playersUpdate", setPlayers);
-    socket.on("buzzed", setBuzzed);
-    socket.on("resetAll", () => {
-      setPlayers({});
-      setBuzzed(null);
-    });
-  }, []);
-
-  const join = (r) => {
-    setRole(r);
-    socket.emit("join", { name, role: r });
+  const handleJoin = (role) => {
+    if (!name) return alert("Enter your name first!");
+    setIsHost(role === "host");
+    setJoined(true);
   };
 
-  if (!role)
+  if (!joined) {
     return (
-      <div style={{ textAlign: "center", marginTop: 100 }}>
-        <h2>Join Room</h2>
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <h1 className="text-5xl font-bold">EZ-Buzzer 🎤</h1>
         <input
-          placeholder="Your Name"
+          type="text"
+          placeholder="Enter your name"
+          className="p-2 rounded text-black"
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <br />
-        <button onClick={() => join("host")}>Join as Host</button>
-        <button onClick={() => join("player")}>Join as Player</button>
-      </div>
-    );
-
-  if (role === "player")
-    return (
-      <div style={{ textAlign: "center", marginTop: 100 }}>
-        <h2>Welcome {name}</h2>
-        <button
-          onClick={() => socket.emit("buzz")}
-          style={{ fontSize: 30, padding: 20 }}
-        >
-          🔔 BUZZ
-        </button>
-      </div>
-    );
-
-  // HOST SCREEN
-  return (
-    <div style={{ padding: 20 }}>
-      <h2>Host Panel</h2>
-      <button onClick={() => socket.emit("reset")}>Reset All</button>
-      {buzzed && (
-        <div
-          style={{
-            border: "2px solid red",
-            padding: 10,
-            margin: 10,
-            background: "#fee",
-          }}
-        >
-          <h3>Buzzed: {players[buzzed]?.name}</h3>
-          <button onClick={() => socket.emit("startSpeaking", buzzed)}>
-            Start Speaking
+        <div className="flex gap-4">
+          <button
+            onClick={() => handleJoin("host")}
+            className="bg-green-600 px-4 py-2 rounded-lg text-white text-lg"
+          >
+            Join as Host
           </button>
-          <button onClick={() => socket.emit("stopSpeaking")}>Stop</button>
-          <button onClick={() => socket.emit("adjustScore", { id: buzzed, delta: +3 })}>
-            +3
-          </button>
-          <button onClick={() => socket.emit("adjustScore", { id: buzzed, delta: -1 })}>
-            -1
+          <button
+            onClick={() => handleJoin("player")}
+            className="bg-blue-600 px-4 py-2 rounded-lg text-white text-lg"
+          >
+            Join as Player
           </button>
         </div>
-      )}
-      <h3>Leaderboard (Host-only)</h3>
-      <ul>
-        {Object.entries(players).map(([id, p]) => (
-          <li key={id}>
-            {p.name} — {p.score} pts ({p.speakingTime}s)
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return isHost ? <HostView name={name} /> : <PlayerView name={name} />;
 }
+
+export default App;
