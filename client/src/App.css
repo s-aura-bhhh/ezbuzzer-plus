@@ -1,42 +1,64 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0b0b0b;
+  color: white;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.container {
+  padding: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.join-box input {
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.join-box button {
+  padding: 10px 20px;
+  margin: 5px;
 }
 
-.card {
-  padding: 2em;
+.buzz-button {
+  width: 100%;
+  height: 80vh;
+  font-size: 4rem;
+  background: red;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+.buzz-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buzzed-display {
+  font-size: 1.8rem;
+  margin: 20px 0;
+  color: #ffdd57;
+}
+
+.host-controls button {
+  margin: 5px;
+  padding: 8px 16px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+  text-align: left;
+  display: inline-block;
+}
+
+li {
+  margin: 8px 0;
+  background: #1e1e1e;
+  padding: 10px;
+  border-radius: 8px;
 }
